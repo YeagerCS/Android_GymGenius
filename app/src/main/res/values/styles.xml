@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">@android:color/white</item> <!-- Use a white color as the background -->
+    </style>
+</resources>

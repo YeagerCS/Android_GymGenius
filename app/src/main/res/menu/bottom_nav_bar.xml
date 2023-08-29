@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/newWorkout"
+        android:icon="@drawable/nav_bar_new"
+        android:title="New Workout" />
+    <item
+        android:id="@+id/workouts"
+        android:icon="@drawable/nav_bar_package"
+        android:title="Workouts" />
+    <!-- Add more items as needed -->
+</menu>

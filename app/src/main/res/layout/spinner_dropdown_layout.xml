@@ -1,0 +1,17 @@
+<!-- res/layout/spinner_dropdown_item.xml -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:text="Esse"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceListItem"
+    android:textColor="@color/white"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:textSize="26dp"
+    android:paddingBottom="10dp"
+    android:fontFamily="@font/audiowide"
+    android:textFontWeight="1"
+    android:gravity="center"
+    android:background="@drawable/spinner_shape"
+    />

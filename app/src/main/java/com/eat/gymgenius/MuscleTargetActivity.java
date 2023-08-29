@@ -13,6 +13,7 @@ import android.widget.Button;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -81,6 +82,8 @@ public class MuscleTargetActivity extends AppCompatActivity {
                         List<Exercise> exercises = parseExercises(result);
                         exercises.forEach(ex -> Log.d("tag", String.valueOf(ex.getName())));
                         Intent intent = new Intent(getApplicationContext(), ApiListReturnActivity.class);
+                        intent.putExtra("exercises", (Serializable) exercises);
+                        intent.putExtra("muscle", selectedMuscle);
                         startActivity(intent);
                     }else {
                         Log.d("ApiError", "Some error occured");

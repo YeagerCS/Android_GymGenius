@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:fontFamily="@font/audiowide"
+        android:textSize="28dp"
         android:text="Item Text"/>
 
     <LinearLayout
@@ -20,16 +22,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/infoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button 1" />
+            android:textColor="@color/white"
+            android:background="@drawable/list_button_shape"
+            android:text="Info" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button 2"
+            android:textColor="@color/white"
+            android:background="@drawable/list_button_shape"
+            android:text="Add"
             />
 
     </LinearLayout>

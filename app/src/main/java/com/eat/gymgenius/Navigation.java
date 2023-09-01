@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class Navigation {
+
     public static void loadNavigationBar(BottomNavigationView bottomNavigationView, Context context){
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -19,6 +20,8 @@ public class Navigation {
                     Intent intent = new Intent(context, CreateActivity.class);
                     context.startActivity(intent);
                     return true;
+                } else if(item.getItemId() == R.id.workouts){
+                    /*Intent intent = new Intent(context)*/
                 }
 
                 return false;

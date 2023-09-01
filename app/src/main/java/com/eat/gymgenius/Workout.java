@@ -1,8 +1,10 @@
 package com.eat.gymgenius;
 
+import java.util.List;
+
 public class Workout {
     private String name;
-    private Exercise[] exercises;
+    private List<Exercise> exercises;
 
     public String getName() {
         return name;
@@ -12,15 +14,15 @@ public class Workout {
         this.name = name;
     }
 
-    public Exercise[] getExercises() {
+    public List<Exercise> getExercises() {
         return exercises;
     }
 
-    public void setExercises(Exercise[] exercises) {
+    public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
     }
 
-    public Workout(String name, Exercise[] exercises) {
+    public Workout(String name, List<Exercise> exercises) {
         this.name = name;
         this.exercises = exercises;
     }

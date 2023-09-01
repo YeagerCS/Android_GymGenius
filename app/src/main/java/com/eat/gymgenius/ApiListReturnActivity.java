@@ -33,11 +33,19 @@ public class ApiListReturnActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<Exercise> exercises;
         Intent intent = getIntent();
+
+        Navigation.loadNavigationBar(findViewById(R.id.bottomnav), this);
         String muscle = "";
         if(intent != null){
             exercises = (List<Exercise>) intent.getSerializableExtra("exercises");
+            customRecyclingAdapter = new CustomRecyclingAdapter(exercises);
+
             workoutName = intent.getStringExtra("workout");
             muscle = intent.getStringExtra("muscle");
+            if(intent.getSerializableExtra("chosen") != null){
+                chosenExercises = (List<Exercise>) intent.getSerializableExtra("chosen");
+                customRecyclingAdapter.setChosenExercises(chosenExercises);
+            }
         } else{
             exercises = new ArrayList<>();
         }
@@ -46,7 +54,6 @@ public class ApiListReturnActivity extends AppCompatActivity {
         muscleTextView = findViewById(R.id.muscleTextView);
         muscleTextView.setText(muscle);
 
-        customRecyclingAdapter = new CustomRecyclingAdapter(exercises);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(customRecyclingAdapter);
@@ -61,6 +68,7 @@ public class ApiListReturnActivity extends AppCompatActivity {
                 accessChosenExercises();
                 Intent intent = new Intent(getApplicationContext(), YourWorkoutActivity.class);
                 intent.putExtra("chosen", (Serializable) chosenExercises);
+                intent.putExtra("workoutName", workoutName);
                 startActivity(intent);
             }
         });

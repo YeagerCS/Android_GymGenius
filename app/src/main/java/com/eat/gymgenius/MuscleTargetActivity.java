@@ -41,6 +41,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
     private TextView textViewWorkout;
     private String selectedMuscle;
     private EditText selectedMuscleEditText;
+    private List<Exercise> givenExercises;
     private Button button;
     private Spinner spinner;
 
@@ -50,12 +51,16 @@ public class MuscleTargetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_muscle_target);
 
 
+        givenExercises = new ArrayList<>();
         textViewWorkout = findViewById(R.id.textViewWorkout);
         selectedMuscleEditText = findViewById(R.id.targetMuscleTbx);
         button = findViewById(R.id.searchBtn);
         Intent intent = getIntent();
         if(intent != null){
             textViewWorkout.setText(intent.getStringExtra("workoutName"));
+            if(intent.getSerializableExtra("chosen") != null){
+                givenExercises = (List<Exercise>) intent.getSerializableExtra("chosen");
+            }
         }
         registerButtonClick();
         configureSpinner();
@@ -85,6 +90,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                         intent.putExtra("exercises", (Serializable) exercises);
                         intent.putExtra("muscle", selectedMuscle);
                         intent.putExtra("workout", textViewWorkout.getText().toString());
+                        intent.putExtra("chosen", (Serializable) givenExercises);
                         startActivity(intent);
                     }else {
                         Log.d("ApiError", "Some error occured");

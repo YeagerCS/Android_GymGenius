@@ -73,6 +73,6 @@ public class Exercise implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return name + ", " + muscle;
+        return name;
     }
 }

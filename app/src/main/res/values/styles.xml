@@ -3,4 +3,9 @@
     <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
         <item name="android:popupBackground">@android:color/white</item> <!-- Use a white color as the background -->
     </style>
+    <style name="CustomTextAppearance">
+        <item name="android:fontFamily">@font/audiowide</item> <!-- Use your custom font -->
+        <item name="android:textSize">16sp</item> <!-- Specify the text size -->
+        <item name="android:textColor">#333333</item> <!-- Specify the text color -->
+    </style>
 </resources>

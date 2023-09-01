@@ -1,6 +1,7 @@
 package com.eat.gymgenius;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ public class CustomRecyclingAdapter extends RecyclerView.Adapter<CustomRecycling
     public List<Exercise> getChosenExercises(){
         return this.chosenExercises;
     }
+    public void setChosenExercises(List<Exercise> chosenExercises){
+        this.chosenExercises = chosenExercises;
+    }
 
     @NonNull
     @Override
@@ -43,10 +47,21 @@ public class CustomRecyclingAdapter extends RecyclerView.Adapter<CustomRecycling
             intent.putExtra("info", itemList.get(position).getInstructions());
             view.getContext().startActivity(intent);
         });
-        holder.button2.setOnClickListener(view -> {
-            Exercise exercise = itemList.get(position);
-            chosenExercises.add(exercise);
+        if (chosenExercises.contains(item)) {
             holder.button2.setText("Added");
+        } else {
+            holder.button2.setText("Add");
+        }
+
+        holder.button2.setOnClickListener(view -> {
+            if (chosenExercises.contains(item)) {
+                chosenExercises.remove(item);
+                holder.button2.setText("Add");
+            } else {
+                chosenExercises.add(item);
+                holder.button2.setText("Added");
+            }
+            Log.d("Tag", chosenExercises.toString());
         });
     }
 

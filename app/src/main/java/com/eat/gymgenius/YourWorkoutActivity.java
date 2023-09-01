@@ -1,18 +1,33 @@
 package com.eat.gymgenius;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class YourWorkoutActivity extends AppCompatActivity {
 
     private List<Exercise> exercises;
-    private ArrayAdapter<Exercise> exerciseArrayAdapter;
+    private ListView listView;
+    private String workoutName;
+    private CustomListAdapter listAdapter;
+    private Button addMuscleBtn;
+    private Button saveBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +36,74 @@ public class YourWorkoutActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null){
             exercises = (List<Exercise>) intent.getSerializableExtra("chosen");
+            workoutName = intent.getStringExtra("workoutName");
         }
 
-        exerciseArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, exercises);
 
-        ListView listView = findViewById(R.id.listViewEsse);
-        listView.setAdapter(exerciseArrayAdapter);
+        saveBtn = findViewById(R.id.saveBtn);
+        addMuscleBtn = findViewById(R.id.addMuscleBtn);
+        listAdapter = new CustomListAdapter(this, exercises);
+        listView = findViewById(R.id.listViewEsse);
+        listView.setDivider(getResources().getDrawable(android.R.color.transparent));
+        listView.setDividerHeight(0);
+        listView.setAdapter(listAdapter);
+
+        registerButtonHold();
+        registerAddMuscleButton();
+        registerSaveButton();
     }
+
+    private void registerButtonHold(){
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Exercise removedExc = listAdapter.getItem(i);
+                exercises.remove(i);
+
+                listAdapter.remove(removedExc);
+
+                listAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+    }
+
+    private void registerAddMuscleButton(){
+        addMuscleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MuscleTargetActivity.class);
+                intent.putExtra("chosen", (Serializable) exercises);
+                intent.putExtra("workoutName", workoutName);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void registerSaveButton(){
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
+                Gson gson = new Gson();
+
+                List<Workout> workoutList;
+                if(!existingWorkoutJson.isEmpty()){
+                    Type typeList = new TypeToken<List<Workout>>(){}.getType();
+                    workoutList = gson.fromJson(existingWorkoutJson, typeList);
+                } else{
+                    workoutList = new ArrayList<>();
+                }
+
+                workoutList.add(new Workout(workoutName, exercises));
+
+                String updatedJson = gson.toJson(workoutList);
+                editor.putString("workout_key", updatedJson);
+                editor.apply();
+            }
+        });
+    }
+
 }

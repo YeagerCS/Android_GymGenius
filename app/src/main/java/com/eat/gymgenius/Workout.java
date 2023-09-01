@@ -2,7 +2,7 @@ package com.eat.gymgenius;
 
 public class Workout {
     private String name;
-    private Exercise exercise;
+    private Exercise[] exercises;
 
     public String getName() {
         return name;
@@ -12,11 +12,16 @@ public class Workout {
         this.name = name;
     }
 
-    public Exercise getExercise() {
-        return exercise;
+    public Exercise[] getExercises() {
+        return exercises;
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public void setExercises(Exercise[] exercises) {
+        this.exercises = exercises;
+    }
+
+    public Workout(String name, Exercise[] exercises) {
+        this.name = name;
+        this.exercises = exercises;
     }
 }

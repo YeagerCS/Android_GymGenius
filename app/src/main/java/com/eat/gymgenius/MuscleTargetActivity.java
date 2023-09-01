@@ -84,6 +84,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), ApiListReturnActivity.class);
                         intent.putExtra("exercises", (Serializable) exercises);
                         intent.putExtra("muscle", selectedMuscle);
+                        intent.putExtra("workout", textViewWorkout.getText().toString());
                         startActivity(intent);
                     }else {
                         Log.d("ApiError", "Some error occured");

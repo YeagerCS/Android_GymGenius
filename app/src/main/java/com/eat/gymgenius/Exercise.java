@@ -1,5 +1,7 @@
 package com.eat.gymgenius;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Exercise implements Serializable {
@@ -66,5 +68,11 @@ public class Exercise implements Serializable {
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name + ", " + muscle;
     }
 }

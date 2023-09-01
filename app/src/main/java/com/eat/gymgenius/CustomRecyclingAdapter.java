@@ -9,14 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomRecyclingAdapter extends RecyclerView.Adapter<CustomRecyclingAdapter.ViewHolder> {
 
     private List<Exercise> itemList;
+    private List<Exercise> chosenExercises;
 
     public CustomRecyclingAdapter(List<Exercise> itemList) {
         this.itemList = itemList;
+        chosenExercises = new ArrayList<>();
+    }
+
+    public List<Exercise> getChosenExercises(){
+        return this.chosenExercises;
     }
 
     @NonNull
@@ -37,7 +44,9 @@ public class CustomRecyclingAdapter extends RecyclerView.Adapter<CustomRecycling
             view.getContext().startActivity(intent);
         });
         holder.button2.setOnClickListener(view -> {
-            // Handle button2 click
+            Exercise exercise = itemList.get(position);
+            chosenExercises.add(exercise);
+            holder.button2.setText("Added");
         });
     }
 

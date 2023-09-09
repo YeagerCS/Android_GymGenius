@@ -21,7 +21,9 @@ public class Navigation {
                     context.startActivity(intent);
                     return true;
                 } else if(item.getItemId() == R.id.workouts){
-                    /*Intent intent = new Intent(context)*/
+                    Intent intent = new Intent(context, SavedWorkoutsActivity.class);
+                    context.startActivity(intent);
+                    return true;
                 }
 
                 return false;

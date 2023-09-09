@@ -26,4 +26,9 @@ public class Workout {
         this.name = name;
         this.exercises = exercises;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

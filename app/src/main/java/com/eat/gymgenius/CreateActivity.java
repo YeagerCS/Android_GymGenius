@@ -9,17 +9,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class CreateActivity extends AppCompatActivity {
 
     private String workoutName;
     private EditText workoutNameTbx;
     private Button nextBtn;
-
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create1);
 
+        bottomNavigationView = findViewById(R.id.bottomnav);
+        Navigation.loadNavigationBar(bottomNavigationView, CreateActivity.this);
         workoutNameTbx = findViewById(R.id.targetMuscleTbx);
         nextBtn = findViewById(R.id.searchBtn);
         registerButtonClicked();

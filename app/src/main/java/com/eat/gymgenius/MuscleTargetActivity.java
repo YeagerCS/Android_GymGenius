@@ -2,6 +2,7 @@ package com.eat.gymgenius;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -44,6 +46,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
     private List<Exercise> givenExercises;
     private Button button;
     private Spinner spinner;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class MuscleTargetActivity extends AppCompatActivity {
         textViewWorkout = findViewById(R.id.textViewWorkout);
         selectedMuscleEditText = findViewById(R.id.targetMuscleTbx);
         button = findViewById(R.id.searchBtn);
+        bottomNavigationView = findViewById(R.id.bottomnav);
+        Navigation.loadNavigationBar(bottomNavigationView, MuscleTargetActivity.this);
         Intent intent = getIntent();
         if(intent != null){
             textViewWorkout.setText(intent.getStringExtra("workoutName"));
@@ -77,6 +82,11 @@ public class MuscleTargetActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final Dialog loadingDialog = new Dialog(MuscleTargetActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+                loadingDialog.setContentView(R.layout.custom_dialog);
+                loadingDialog.setCancelable(false);
+                loadingDialog.show();
+
                 selectedMuscle = selectedMuscleEditText.getText().toString();
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> apiRequest(selectedMuscle), executorService);
@@ -84,6 +94,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                 future.thenAccept(result -> {
                     if(result != null){
                         Log.d("Tag", result);
+                        loadingDialog.dismiss();
                         List<Exercise> exercises = parseExercises(result);
                         exercises.forEach(ex -> Log.d("tag", String.valueOf(ex.getName())));
                         Intent intent = new Intent(getApplicationContext(), ApiListReturnActivity.class);

@@ -8,18 +8,36 @@
 
     <TextView
         android:id="@+id/textViewExerciseName"
-        android:text="Eater"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/CustomTextAppearance"
         android:gravity="center"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:background="@drawable/workout_list_bg"
-    />
+        android:fontFamily="@font/audiowide"
+        android:textSize="28dp"
+        android:text="Item Text"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@drawable/list_button_shape"
+            android:text="Edit" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@drawable/list_button_shape"
+            android:text="Start"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

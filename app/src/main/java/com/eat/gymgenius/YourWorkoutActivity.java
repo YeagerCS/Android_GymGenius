@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +26,7 @@ public class YourWorkoutActivity extends AppCompatActivity {
     private List<Exercise> exercises;
     private ListView listView;
     private String workoutName;
+    private BottomNavigationView bottomNavigationView;
     private CustomListAdapter listAdapter;
     private Button addMuscleBtn;
     private Button saveBtn;
@@ -39,7 +41,8 @@ public class YourWorkoutActivity extends AppCompatActivity {
             workoutName = intent.getStringExtra("workoutName");
         }
 
-
+        bottomNavigationView = findViewById(R.id.bottomnav);
+        Navigation.loadNavigationBar(bottomNavigationView, YourWorkoutActivity.this);
         saveBtn = findViewById(R.id.saveBtn);
         addMuscleBtn = findViewById(R.id.addMuscleBtn);
         listAdapter = new CustomListAdapter(this, exercises);
@@ -87,7 +90,7 @@ public class YourWorkoutActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
-                Gson gson = new Gson();
+                Gson gson = new Gson(); 
 
                 List<Workout> workoutList;
                 if(!existingWorkoutJson.isEmpty()){

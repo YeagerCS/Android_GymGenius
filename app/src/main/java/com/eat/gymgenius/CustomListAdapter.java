@@ -18,7 +18,7 @@ public class CustomListAdapter extends ArrayAdapter<Exercise> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.workout_item_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.workout_item_layout_v2, parent, false);
         }
 
         TextView textViewExerciseName = convertView.findViewById(R.id.textViewExerciseName);

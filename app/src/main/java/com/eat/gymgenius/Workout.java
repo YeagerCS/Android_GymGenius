@@ -1,8 +1,9 @@
 package com.eat.gymgenius;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Workout {
+public class Workout implements Serializable {
     private String name;
     private List<Exercise> exercises;
 

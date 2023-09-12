@@ -27,39 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomnav);
-        Navigation.loadNavigationBar(bottomNavigationView, this);
-        /*bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.newWorkout){
-                    Intent intent = new Intent(MainActivity.this, CreateActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-
-                return false;
-            }
-        });*/
-
-        temporarySharedPreferencesCheck();
-    }
-
-    private void temporarySharedPreferencesCheck(){
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
-        String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
-
-        if (!existingWorkoutJson.isEmpty()) {
-            Gson gson = new Gson();
-            Type typeList = new TypeToken<List<Workout>>(){}.getType();
-            List<Workout> workoutList = gson.fromJson(existingWorkoutJson, typeList);
-
-            for (Workout workout : workoutList) {
-                Log.d("Workout Name:", workout.getName());
-            }
-
-            Log.d("Json Workouts", existingWorkoutJson);
-        } else {
-            Log.d("Shared Preferences", "No data found in SharedPreferences");
-        }
+        Navigation.loadNavigationBar(bottomNavigationView, MainActivity.this);
     }
 }

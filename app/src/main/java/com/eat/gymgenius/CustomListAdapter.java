@@ -30,4 +30,6 @@ public class CustomListAdapter extends ArrayAdapter<Exercise> {
 
         return convertView;
     }
+
+
 }

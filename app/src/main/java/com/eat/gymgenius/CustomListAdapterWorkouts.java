@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +34,13 @@ public class CustomListAdapterWorkouts extends RecyclerView.Adapter<CustomListAd
         Workout item = itemList.get(position);
 
         holder.itemText.setText(item.getName());
+        //Start
         holder.button1.setOnClickListener(view -> {
-
+            Intent intent = new Intent(view.getContext(), StartedWorkoutActivity.class);
+            intent.putExtra("workout", (Serializable) item);
+            view.getContext().startActivity(intent);
         });
-
+        //Edit
         holder.button2.setOnClickListener(view -> {
 
         });

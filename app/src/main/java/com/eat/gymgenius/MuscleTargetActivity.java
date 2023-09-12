@@ -96,8 +96,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                         Log.d("Tag", result);
                         loadingDialog.dismiss();
                         List<Exercise> exercises = parseExercises(result);
-                        exercises.forEach(ex -> Log.d("tag", String.valueOf(ex.getName())));
-                        Intent intent = new Intent(getApplicationContext(), ApiListReturnActivity.class);
+                        Intent intent = new Intent(MuscleTargetActivity.this, ApiListReturnActivity.class);
                         intent.putExtra("exercises", (Serializable) exercises);
                         intent.putExtra("muscle", selectedMuscle);
                         intent.putExtra("workout", textViewWorkout.getText().toString());

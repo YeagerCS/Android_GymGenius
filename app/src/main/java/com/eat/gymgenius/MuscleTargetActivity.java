@@ -9,6 +9,7 @@ import android.os.Bundle;
 import okhttp3.*;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import java.io.IOException;
@@ -42,9 +43,10 @@ public class MuscleTargetActivity extends AppCompatActivity {
 
     private TextView textViewWorkout;
     private String selectedMuscle;
-    private EditText selectedMuscleEditText;
+    private Spinner selectedMuscleSpinner;
     private List<Exercise> givenExercises;
     private Button button;
+    private int index;
     private Spinner spinner;
     private BottomNavigationView bottomNavigationView;
 
@@ -56,7 +58,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
 
         givenExercises = new ArrayList<>();
         textViewWorkout = findViewById(R.id.textViewWorkout);
-        selectedMuscleEditText = findViewById(R.id.targetMuscleTbx);
+        selectedMuscleSpinner = findViewById(R.id.targetMuscleTbx);
         button = findViewById(R.id.searchBtn);
         bottomNavigationView = findViewById(R.id.bottomnav);
         Navigation.loadNavigationBar(bottomNavigationView, MuscleTargetActivity.this);
@@ -66,16 +68,24 @@ public class MuscleTargetActivity extends AppCompatActivity {
             if(intent.getSerializableExtra("chosen") != null){
                 givenExercises = (List<Exercise>) intent.getSerializableExtra("chosen");
             }
+
+            index = intent.getIntExtra("index", -1);
         }
         registerButtonClick();
-        configureSpinner();
+        configureSpinners();
     }
 
-    private void configureSpinner(){
+    private void configureSpinners(){
+        //Difficulty spinner
         String[] options = {"Beginner", "Intermediate", "Expert"};
         spinner = findViewById(R.id.spinner);
         CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, options);
         spinner.setAdapter(adapter);
+
+        //Target Muscle Spinner
+        String[] muscles = {"abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps"};
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, muscles);
+        selectedMuscleSpinner.setAdapter(spinnerAdapter);
     }
 
     private void registerButtonClick(){
@@ -87,7 +97,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                 loadingDialog.setCancelable(false);
                 loadingDialog.show();
 
-                selectedMuscle = selectedMuscleEditText.getText().toString();
+                selectedMuscle = selectedMuscleSpinner.getSelectedItem().toString();
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> apiRequest(selectedMuscle), executorService);
 
@@ -101,6 +111,7 @@ public class MuscleTargetActivity extends AppCompatActivity {
                         intent.putExtra("muscle", selectedMuscle);
                         intent.putExtra("workout", textViewWorkout.getText().toString());
                         intent.putExtra("chosen", (Serializable) givenExercises);
+                        intent.putExtra("index", index);
                         startActivity(intent);
                     }else {
                         Log.d("ApiError", "Some error occured");

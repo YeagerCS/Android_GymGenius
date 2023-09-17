@@ -9,7 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
 import androidx.biometric.BiometricPrompt;
-
+//androidx.biometric.BiometricPrompt possibly shown as not resolvable by the IDE, application still starts
+//and biometrics still work.
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;

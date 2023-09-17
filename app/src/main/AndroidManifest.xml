@@ -5,43 +5,53 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:theme="@style/MainTheme"
         tools:targetApi="31">
         <activity
             android:name=".AwwActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".CongratulationsActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".StartedWorkoutActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".SavedWorkoutsActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".YourWorkoutActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ExerciseInfoActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ApiListReturnActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity android:name=".MuscleTargetActivity" />
         <activity android:name=".CreateActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

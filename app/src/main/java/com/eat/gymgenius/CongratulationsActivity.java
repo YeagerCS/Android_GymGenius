@@ -14,31 +14,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.io.IOException;
 
 public class CongratulationsActivity extends AppCompatActivity {
 
     private static final int REQUEST_AUDIO_PERMISSION = 1;
     private MediaPlayer mediaPlayer;
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_congratulations);
+        bottomNavigationView = findViewById(R.id.bottomnav);
+        bottomNavigationView.setSelectedItemId(R.id.workouts);
+
+        Navigation.loadNavigationBar(bottomNavigationView, this);
 
         mediaPlayer = new MediaPlayer();
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_AUDIO_PERMISSION);
-        } else{
-            playAudio();
-        }
+        playAudio();
     }
 
     public void playAudio() {
         try {
-            Log.d("Eat", "playAudio()");
             mediaPlayer.setDataSource(this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.congratulations));
             mediaPlayer.prepare();
             mediaPlayer.start();
@@ -51,6 +52,15 @@ public class CongratulationsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Release MediaPlayer resources when the activity is destroyed
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        // Release MediaPlayer resources when the activity is stopped
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }

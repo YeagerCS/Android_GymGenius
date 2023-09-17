@@ -1,6 +1,8 @@
 package com.eat.gymgenius;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -63,6 +66,7 @@ public class SavedWorkoutsActivity extends AppCompatActivity {
         listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(customListAdapter);
         registerButtonClick();
+        deleteWorkout();
     }
 
     private void registerButtonClick(){
@@ -99,5 +103,37 @@ public class SavedWorkoutsActivity extends AppCompatActivity {
             List<Workout> workoutList = gson.fromJson(existingWorkouts, typeList);
             workouts = workoutList;
         }
+    }
+
+    private void deleteWorkout(){
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                String workoutName = workouts.get(position).getName();
+                workouts.remove(position);
+                customListAdapter.notifyDataSetChanged();
+                Toast.makeText(SavedWorkoutsActivity.this, "" + workoutName + " deleted.", Toast.LENGTH_SHORT).show();
+                deleteOutOfSharedPreferences();
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(listView);
+    }
+
+    private void deleteOutOfSharedPreferences(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String newWorkouts = gson.toJson(workouts);
+        editor.putString("workout_key", newWorkouts);
+        editor.apply();
     }
 }

@@ -37,12 +37,17 @@ public class CustomListAdapterWorkouts extends RecyclerView.Adapter<CustomListAd
         //Start
         holder.button1.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), StartedWorkoutActivity.class);
-            intent.putExtra("workout", (Serializable) item);
+            intent.putExtra("workout", item);
             view.getContext().startActivity(intent);
         });
         //Edit
         holder.button2.setOnClickListener(view -> {
-
+            //YourWorkout
+            Intent intent = new Intent(view.getContext(), YourWorkoutActivity.class);
+            intent.putExtra("chosen", (Serializable) item.getExercises());
+            intent.putExtra("workoutName", item.getName());
+            intent.putExtra("index", position);
+            view.getContext().startActivity(intent);
         });
     }
 

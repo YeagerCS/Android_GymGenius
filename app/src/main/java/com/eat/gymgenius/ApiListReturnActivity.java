@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,19 +21,19 @@ import java.util.List;
 
 public class ApiListReturnActivity extends AppCompatActivity {
 
-
     private TextView muscleTextView;
     private String workoutName;
     private List<Exercise> chosenExercises;
+    private TextView noResText;
     private CustomRecyclingAdapter customRecyclingAdapter;
     private Button doneButton;
+    private int index;
     private BottomNavigationView bottomNavigationView;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_api_list_return);
-
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<Exercise> exercises;
         Intent intent = getIntent();
@@ -49,10 +50,12 @@ public class ApiListReturnActivity extends AppCompatActivity {
                 chosenExercises = (List<Exercise>) intent.getSerializableExtra("chosen");
                 customRecyclingAdapter.setChosenExercises(chosenExercises);
             }
+            index = intent.getIntExtra("index", -1);
         } else{
             exercises = new ArrayList<>();
         }
 
+        noResText = findViewById(R.id.noresText);
         bottomNavigationView = findViewById(R.id.bottomnav);
         Navigation.loadNavigationBar(bottomNavigationView, ApiListReturnActivity.this);
         doneButton = findViewById(R.id.doneBtn);
@@ -62,9 +65,25 @@ public class ApiListReturnActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(customRecyclingAdapter);
-
+        checkExercisesSize(exercises);
         registerButtonClicks();
     }
+
+    private void checkExercisesSize(List<Exercise> exercises){
+        if(exercises.size() == 0){
+            noResText.setVisibility(View.VISIBLE);
+        } else{
+            noResText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        noResText.setVisibility(View.INVISIBLE);
+    }
+
 
     private void registerButtonClicks(){
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +93,7 @@ public class ApiListReturnActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), YourWorkoutActivity.class);
                 intent.putExtra("chosen", (Serializable) chosenExercises);
                 intent.putExtra("workoutName", workoutName);
+                intent.putExtra("index", index);
                 startActivity(intent);
             }
         });

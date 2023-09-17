@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
@@ -34,6 +35,14 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         Exercise item = itemList.get(position);
 
         holder.itemText.setText(item.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ExerciseInfoActivity.class);
+                intent.putExtra("info", item.getInstructions());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -43,13 +52,10 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView itemText;
-        Button button1, button2;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemText = itemView.findViewById(R.id.textViewExerciseName);
-            button1 = itemView.findViewById(R.id.startButton);
-            button2 = itemView.findViewById(R.id.editButton);
         }
     }
 }

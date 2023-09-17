@@ -3,9 +3,12 @@ package com.eat.gymgenius;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +32,7 @@ public class YourWorkoutActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private CustomListAdapter listAdapter;
     private Button addMuscleBtn;
+    private int index;
     private Button saveBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class YourWorkoutActivity extends AppCompatActivity {
         if(intent != null){
             exercises = (List<Exercise>) intent.getSerializableExtra("chosen");
             workoutName = intent.getStringExtra("workoutName");
+
+            index = intent.getIntExtra("index", -1);
         }
 
         bottomNavigationView = findViewById(R.id.bottomnav);
@@ -78,6 +84,7 @@ public class YourWorkoutActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MuscleTargetActivity.class);
                 intent.putExtra("chosen", (Serializable) exercises);
                 intent.putExtra("workoutName", workoutName);
+                intent.putExtra("index", index);
                 startActivity(intent);
             }
         });
@@ -87,26 +94,69 @@ public class YourWorkoutActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
-                Gson gson = new Gson(); 
-
-                List<Workout> workoutList;
-                if(!existingWorkoutJson.isEmpty()){
-                    Type typeList = new TypeToken<List<Workout>>(){}.getType();
-                    workoutList = gson.fromJson(existingWorkoutJson, typeList);
+                if(index == -1){
+                    saveWorkout();
                 } else{
-                    workoutList = new ArrayList<>();
+                    overwriteWorkout();
                 }
-
-                workoutList.add(new Workout(workoutName, exercises));
-
-                String updatedJson = gson.toJson(workoutList);
-                editor.putString("workout_key", updatedJson);
-                editor.apply();
+                //Sleep for .5s, then navigate
+                final Dialog loadingDialog = new Dialog(YourWorkoutActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+                loadingDialog.setContentView(R.layout.custom_dialog);
+                loadingDialog.setCancelable(false);
+                loadingDialog.show();
+                new Handler().postDelayed(() -> {
+                    loadingDialog.dismiss();
+                    Intent intent = new Intent(YourWorkoutActivity.this, SavedWorkoutsActivity.class);
+                    startActivity(intent);
+                }, 500);
             }
         });
+    }
+
+    private void saveWorkout(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
+        Gson gson = new Gson();
+
+        List<Workout> workoutList;
+        if(!existingWorkoutJson.isEmpty()){
+            Type typeList = new TypeToken<List<Workout>>(){}.getType();
+            workoutList = gson.fromJson(existingWorkoutJson, typeList);
+        } else{
+            workoutList = new ArrayList<>();
+        }
+
+        workoutList.add(new Workout(workoutName, exercises));
+
+        String updatedJson = gson.toJson(workoutList);
+        editor.putString("workout_key", updatedJson);
+        editor.apply();
+    }
+
+    private void overwriteWorkout() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String existingWorkoutJson = sharedPreferences.getString("workout_key", "");
+        Gson gson = new Gson();
+
+        List<Workout> workoutList;
+        if(!existingWorkoutJson.isEmpty()){
+            Type typeList = new TypeToken<List<Workout>>(){}.getType();
+            workoutList = gson.fromJson(existingWorkoutJson, typeList);
+        } else{
+            workoutList = new ArrayList<>();
+        }
+
+        try{
+            workoutList.set(index, new Workout(workoutName, exercises));
+            String updatedJson = gson.toJson(workoutList);
+            editor.putString("workout_key", updatedJson);
+            editor.apply();
+        } catch (Exception ex){
+            Log.d("Oops", "This shouldn't have happened");
+        }
+
     }
 
 }

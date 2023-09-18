@@ -70,6 +70,7 @@ public class StartedWorkoutActivity extends AppCompatActivity {
         }
     }
     public void playAudio() {
+        mediaPlayer = new MediaPlayer();
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.seekTo(0);
